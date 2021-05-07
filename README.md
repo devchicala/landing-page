@@ -17,14 +17,14 @@ React-toast-notifications
 
 # Instalação
 
-# Abra um terminal e copie este repositório com o comando
+## Abra um terminal e copie este repositório com o comando
 $ git clone https://github.com/cidade-alta.git
 
-# Acesse a pasta da aplicação
+## Acesse a pasta da aplicação
 $ cd cidade-alta
 
-# Instale as dependências
+## Instale as dependências
 $ yarn
 
-# Inicie a aplicação
+## Inicie a aplicação
 $ yarn start
