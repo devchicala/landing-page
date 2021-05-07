@@ -11,9 +11,8 @@ consultar, incluir, editar e visualizar os códigos penais da Cidade Alta.
 # Tecnologia/Ferramentas utilizadas
 
 React
+Typescript
 Context Api
-Material UI
-React-toast-notifications
 
 # Instalação
 
