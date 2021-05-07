@@ -1,24 +1,18 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Globalstyle from "./styles/global";
+
+import Routes from "./routes";
+import { UserProvider } from "./context/index";
+import { ToastProvider } from "react-toast-notifications";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <UserProvider>
+        <Globalstyle />
+        <ToastProvider autoDismiss autoDismissTimeout={4000}>
+          <Routes />
+        </ToastProvider>
+      </UserProvider>
     </div>
   );
 }
