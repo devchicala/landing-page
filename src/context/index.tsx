@@ -16,8 +16,17 @@ interface UserContextData {
   users: userObject;
   changeUser: (dados: any) => void;
   mostraModal: boolean;
+  mostraForm: boolean;
+  mostraFormEdit: boolean;
+  mostraFormDelete: boolean;
   closeModal: () => void;
   showModal: () => void;
+  closeForm: () => void;
+  showForm: () => void;
+  showFormEdit: () => void;
+  closeFormEdit: () => void;
+  showFormDelete: () => void;
+  closeFormDelete: () => void;
   resetUser: () => void;
 }
 
@@ -30,6 +39,9 @@ export const UserContext = createContext({} as UserContextData);
 export function UserProvider({ children }: UserProviderProps) {
   const [users, setUser] = useState<userObject>(INITIAL_STATUS);
   const [mostraModal, setMostraModal] = useState(false);
+  const [mostraForm, setMostraform] = useState(false);
+  const [mostraFormEdit, setMostraFormEdit] = useState(false);
+  const [mostraFormDelete, setMostraFormDelete] = useState(false);
 
   function changeUser(dados: any) {
     setUser(dados);
@@ -43,6 +55,28 @@ export function UserProvider({ children }: UserProviderProps) {
     setMostraModal(false);
   }
 
+  function showForm() {
+    setMostraform(true);
+  }
+
+  function closeForm() {
+    setMostraform(false);
+  }
+
+  function showFormEdit() {
+    setMostraFormEdit(true);
+  }
+  function closeFormEdit() {
+    setMostraFormEdit(false);
+  }
+
+  function showFormDelete() {
+    setMostraFormDelete(true);
+  }
+
+  function closeFormDelete() {
+    setMostraFormDelete(false);
+  }
   function resetUser() {
     setUser(INITIAL_STATUS);
   }
@@ -53,9 +87,18 @@ export function UserProvider({ children }: UserProviderProps) {
         users,
         changeUser,
         mostraModal,
-        closeModal,
+        mostraForm,
+        mostraFormEdit,
+        mostraFormDelete,
         showModal,
+        showForm,
+        closeModal,
+        closeForm,
         resetUser,
+        showFormEdit,
+        closeFormEdit,
+        showFormDelete,
+        closeFormDelete,
       }}
     >
       {children}

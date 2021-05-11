@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from "react";
+import React, { FC, useState, useEffect, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -9,6 +9,11 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { Link } from "react-router-dom";
 import api from "../../services/api";
+import { UserContext } from "../../context";
+
+import Form from "../Form";
+import ModalDelete from "../ModalDelete";
+import ModalEdit from "../ModalEdit";
 
 const useStyles = makeStyles({
   table: {
@@ -35,6 +40,7 @@ const rows = [
 ];
 
 const DenseTable: FC = () => {
+  const { users, mostraForm, mostraFormEdit, mostraFormDelete, closeForm, showForm, showFormEdit, showFormDelete } = useContext(UserContext);
   const classes = useStyles();
 
   const [codigo, setCodigo] = useState([]);
@@ -56,6 +62,7 @@ const DenseTable: FC = () => {
   }, []);
 
   return (
+    <>
     <TableContainer component={Paper}>
       <Table className={classes.table} size="small" aria-label="a dense table">
         <TableHead>
@@ -66,8 +73,9 @@ const DenseTable: FC = () => {
             <TableCell align="right">Multa</TableCell>
             <TableCell align="right">Status</TableCell>
             <TableCell align="right">Tempo de Prisão</TableCell>
-            <TableCell align="right">Action 1</TableCell>
-            <TableCell align="right">Action 2</TableCell>
+            <TableCell align="right">Adicionar</TableCell>
+            <TableCell align="right">Alterar</TableCell>
+            <TableCell align="right">Remover</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -83,15 +91,20 @@ const DenseTable: FC = () => {
               <TableCell align="right">{code['status']}</TableCell>
               <TableCell align="right">{code['tempoPrisao']}</TableCell>
               <TableCell align="right">
-                <Link to="/form">Adicionar</Link>
+                <button onClick={() => showForm()}>Adicionar</button>
               </TableCell>
-              <TableCell align="right">Remover</TableCell>
+              <TableCell align="right"><button onClick={() => showFormEdit()}>alterar</button></TableCell>
+              <TableCell align="right"><button onClick={() => showFormDelete()}>Remover</button></TableCell>
             </TableRow>
             );
           })}
         </TableBody>
       </Table>
     </TableContainer>
+    {mostraForm && <Form />}
+    {mostraFormEdit && <ModalEdit />}
+    {mostraFormDelete && <ModalDelete />}
+    </>
   );
 };
 
