@@ -11,9 +11,12 @@ import { Link } from "react-router-dom";
 import api from "../../services/api";
 import { UserContext } from "../../context";
 
-import Form from "../Form";
+import Form from "../FormCode";
+import Forms from "../Form";
 import ModalDelete from "../ModalDelete";
 import ModalEdit from "../ModalEdit";
+
+import { Button } from "./styles";
 
 const useStyles = makeStyles({
   table: {
@@ -40,7 +43,16 @@ const rows = [
 ];
 
 const DenseTable: FC = () => {
-  const { users, mostraForm, mostraFormEdit, mostraFormDelete, closeForm, showForm, showFormEdit, showFormDelete } = useContext(UserContext);
+  const {
+    users,
+    mostraForm,
+    mostraModalDelete,
+    mostraModalEdit,
+    showModalEdit,
+    showForm,
+    mostraFormEdit,
+    showModalDelete,
+  } = useContext(UserContext);
   const classes = useStyles();
 
   const [codigo, setCodigo] = useState([]);
@@ -56,54 +68,63 @@ const DenseTable: FC = () => {
   }
 
   useEffect(() => {
-    api.get("codigopenal").then(response => {
+    api.get("codigopenal").then((response) => {
       setCodigo(response.data);
     });
   }, []);
 
   return (
     <>
-    <TableContainer component={Paper}>
-      <Table className={classes.table} size="small" aria-label="a dense table">
-        <TableHead>
-          <TableRow>
-            <TableCell>#</TableCell>
-            <TableCell align="right">Nome</TableCell>
-            <TableCell align="right">Data</TableCell>
-            <TableCell align="right">Multa</TableCell>
-            <TableCell align="right">Status</TableCell>
-            <TableCell align="right">Tempo de Prisão</TableCell>
-            <TableCell align="right">Adicionar</TableCell>
-            <TableCell align="right">Alterar</TableCell>
-            <TableCell align="right">Remover</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {codigo.map((code) => {
-            return (
-              <TableRow key={code['id']}>
-              <TableCell component="th" scope="row">
-                {code['id']}
-              </TableCell>
-              <TableCell align="right">{code['nome']}</TableCell>
-              <TableCell align="right">{code['dataCriacao']}</TableCell>
-              <TableCell align="right">{code['multa']}</TableCell>
-              <TableCell align="right">{code['status']}</TableCell>
-              <TableCell align="right">{code['tempoPrisao']}</TableCell>
-              <TableCell align="right">
-                <button onClick={() => showForm()}>Adicionar</button>
-              </TableCell>
-              <TableCell align="right"><button onClick={() => showFormEdit()}>alterar</button></TableCell>
-              <TableCell align="right"><button onClick={() => showFormDelete()}>Remover</button></TableCell>
+      <TableContainer component={Paper}>
+        <Table
+          className={classes.table}
+          size="small"
+          aria-label="a dense table"
+        >
+          <TableHead>
+            <TableRow>
+              <TableCell>#</TableCell>
+              <TableCell align="right">Nome</TableCell>
+              <TableCell align="right">Data</TableCell>
+              <TableCell align="right">Multa</TableCell>
+              <TableCell align="right">Status</TableCell>
+              <TableCell align="right">Tempo de Prisão</TableCell>
+              <TableCell align="right">Adicionar</TableCell>
+              <TableCell align="right">Alterar</TableCell>
+              <TableCell align="right">Remover</TableCell>
             </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-    </TableContainer>
-    {mostraForm && <Form />}
-    {mostraFormEdit && <ModalEdit />}
-    {mostraFormDelete && <ModalDelete />}
+          </TableHead>
+          <TableBody>
+            {codigo.map((code) => {
+              return (
+                <TableRow key={code["id"]}>
+                  <TableCell component="th" scope="row">
+                    {code["id"]}
+                  </TableCell>
+                  <TableCell align="right">{code["nome"]}</TableCell>
+                  <TableCell align="right">{code["dataCriacao"]}</TableCell>
+                  <TableCell align="right">{code["multa"]}</TableCell>
+                  <TableCell align="right">{code["status"]}</TableCell>
+                  <TableCell align="right">{code["tempoPrisao"]}</TableCell>
+                  <TableCell align="right">
+                    <Button onClick={() => showForm()}>Adicionar</Button>
+                  </TableCell>
+                  <TableCell align="right">
+                    <Button onClick={() => showModalEdit(code)}>alterar</Button>
+                  </TableCell>
+                  <TableCell align="right">
+                    <Button onClick={() => showModalDelete()}>Remover</Button>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      {mostraForm && <Form />}
+      {mostraModalEdit && <ModalEdit />}
+      {mostraModalDelete && <ModalDelete />}
+      {mostraFormEdit && <Forms />}
     </>
   );
 };

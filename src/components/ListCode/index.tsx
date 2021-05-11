@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 
-import DenseTable from "../Table";
+import DenseTable from "../Table/index";
 import { Container, Title, Screen } from "./styles";
 import Header from "../Header";
 

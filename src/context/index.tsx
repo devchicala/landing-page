@@ -1,4 +1,5 @@
 import { useState, createContext, ReactNode, useEffect } from "react";
+import Forms from "../components/Form";
 
 const INITIAL_STATUS = {
   id: "",
@@ -12,6 +13,16 @@ interface userObject {
   senha: string;
 }
 
+interface CodigoPenais {
+  id: number;
+  nome: string;
+  descricao: string;
+  dataCriacao: string;
+  multa: number;
+  tempoPrisao: number;
+  status: number;
+}
+
 interface UserContextData {
   users: userObject;
   changeUser: (dados: any) => void;
@@ -19,6 +30,8 @@ interface UserContextData {
   mostraForm: boolean;
   mostraFormEdit: boolean;
   mostraFormDelete: boolean;
+  mostraModalEdit: boolean;
+  mostraModalDelete: boolean;
   closeModal: () => void;
   showModal: () => void;
   closeForm: () => void;
@@ -28,6 +41,11 @@ interface UserContextData {
   showFormDelete: () => void;
   closeFormDelete: () => void;
   resetUser: () => void;
+  codigoPenal: any;
+  showModalEdit: (codigo: CodigoPenais) => void;
+  closeModalEdit: () => void;
+  showModalDelete: () => void;
+  closeModalDelete: () => void;
 }
 
 interface UserProviderProps {
@@ -39,9 +57,12 @@ export const UserContext = createContext({} as UserContextData);
 export function UserProvider({ children }: UserProviderProps) {
   const [users, setUser] = useState<userObject>(INITIAL_STATUS);
   const [mostraModal, setMostraModal] = useState(false);
+  const [mostraModalEdit, setMostraModalEdit] = useState(false);
+  const [mostraModalDelete, setMostraModalDelete] = useState(false);
   const [mostraForm, setMostraform] = useState(false);
   const [mostraFormEdit, setMostraFormEdit] = useState(false);
   const [mostraFormDelete, setMostraFormDelete] = useState(false);
+  const [codigoPenal, setCodigoPenal] = useState<CodigoPenais>();
 
   function changeUser(dados: any) {
     setUser(dados);
@@ -53,6 +74,23 @@ export function UserProvider({ children }: UserProviderProps) {
 
   function closeModal() {
     setMostraModal(false);
+  }
+
+  function showModalEdit(codigo: CodigoPenais) {
+    setMostraModalEdit(true);
+    setCodigoPenal(codigo);
+  }
+
+  function closeModalEdit() {
+    setMostraModalEdit(false);
+  }
+
+  function showModalDelete() {
+    setMostraModalDelete(true);
+  }
+
+  function closeModalDelete() {
+    setMostraModalDelete(false);
   }
 
   function showForm() {
@@ -90,6 +128,8 @@ export function UserProvider({ children }: UserProviderProps) {
         mostraForm,
         mostraFormEdit,
         mostraFormDelete,
+        mostraModalEdit,
+        mostraModalDelete,
         showModal,
         showForm,
         closeModal,
@@ -99,9 +139,14 @@ export function UserProvider({ children }: UserProviderProps) {
         closeFormEdit,
         showFormDelete,
         closeFormDelete,
+        codigoPenal,
+        showModalEdit,
+        closeModalEdit,
+        showModalDelete,
+        closeModalDelete,
       }}
     >
-      {children}
+      {children}      
     </UserContext.Provider>
   );
 }

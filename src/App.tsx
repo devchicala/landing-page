@@ -7,12 +7,12 @@ import { ToastProvider } from "react-toast-notifications";
 function App() {
   return (
     <div className="App">
-      <UserProvider>
-        <Globalstyle />
-        <ToastProvider autoDismiss autoDismissTimeout={4000}>
+      <Globalstyle />
+      <ToastProvider autoDismiss autoDismissTimeout={4000}>
+        <UserProvider>
           <Routes />
-        </ToastProvider>
-      </UserProvider>
+        </UserProvider>
+      </ToastProvider>
     </div>
   );
 }
