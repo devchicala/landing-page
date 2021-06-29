@@ -1,8 +1,8 @@
 import { FC, FormEvent, useContext, useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import { useToasts } from "react-toast-notifications";
+import { v4 } from 'uuid';
 
 import { UserContext } from "../../context";
 import api from "../../services/api";
@@ -33,16 +33,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const FormCode: FC = () => {
-  const { closeForm, codigoPenal } = useContext(UserContext);
+  const { closeForm } = useContext(UserContext);
   const classes = useStyles();
 
-  const history = useHistory();
   const [nome, setNome] = useState("");
-  const [status, setStatus] = useState("");
-  const [tempoPrisao, setTempoPrisao] = useState("");
-  const [multa, setMulta] = useState("");
-  const [dataCriacao, setDataCriacao] = useState("");
   const [descricao, setDescricao] = useState("");
+  const [dataCriacao, setDataCriacao] = useState("");
+  const [tempoPrisao, setTempoPrisao] = useState("");
+  const [status, setStatus] = useState("");
+  const [multa, setMulta] = useState("");
   const [statu, setStatu] = useState([]);
 
   const { addToast } = useToasts();
@@ -65,15 +64,23 @@ const FormCode: FC = () => {
     data.append("dataCriacao", dataCriacao);
     data.append("descricao", descricao);
 
-    await api
-      .post("codigopenal", data)
+    await api 
+      .post("/codigopenal", data)
       .then((response) => {
-        history.push("/listCodes");
+        closeForm();
         addToast("Cadastro realizado com sucesso!", { appearance: "success" });
+        console.log({
+          nome,
+          status,
+          tempoPrisao,
+          multa,
+          dataCriacao,
+          descricao
+        });
       })
       .catch((err) => {
         addToast("Nao foi possivel salvar!", { appearance: "error" });
-      });
+      });      
   }
 
   return (
@@ -100,7 +107,7 @@ const FormCode: FC = () => {
               >
                 {statu.map((status) => {
                   return (
-                    <option value={status["descricao"]}>
+                    <option key={v4()} value={status["descricao"]}>
                       {status["descricao"]}
                     </option>
                   );
@@ -111,16 +118,17 @@ const FormCode: FC = () => {
             &nbsp;
             <div>
               <Label htmlFor="label">Data</Label>
-              <TextField
+              {/*<TextField
                 id="date"
                 type="date"
-                defaultValue="2017-05-24"
+                defaultValue={Today()}
                 className={classes.textField}
+                onChange={(e) => setDataCriacao(e.target.value)}
+              />*/}
+              <Input
+                id="multa"
                 value={dataCriacao}
                 onChange={(e) => setDataCriacao(e.target.value)}
-                InputLabelProps={{
-                  shrink: true,
-                }}
               />
             </div>
           </FormGroup>
@@ -156,7 +164,7 @@ const FormCode: FC = () => {
             </div>
           </FormGroup>
           <FormGroup>
-            <FormButton onSubmit={handleSubmit}>Adicionar</FormButton>
+            <FormButton onSubmit={() => handleSubmit}>Adicionar</FormButton>
           </FormGroup>
         </Form>
         <CloseButton
