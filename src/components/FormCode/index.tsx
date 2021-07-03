@@ -2,7 +2,7 @@ import { FC, FormEvent, useContext, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import { useToasts } from "react-toast-notifications";
-import { v4 } from 'uuid';
+import { v4 } from "uuid";
 
 import { UserContext } from "../../context";
 import api from "../../services/api";
@@ -64,7 +64,7 @@ const FormCode: FC = () => {
     data.append("dataCriacao", dataCriacao);
     data.append("descricao", descricao);
 
-    await api 
+    await api
       .post("/codigopenal", data)
       .then((response) => {
         closeForm();
@@ -75,12 +75,20 @@ const FormCode: FC = () => {
           tempoPrisao,
           multa,
           dataCriacao,
-          descricao
+          descricao,
         });
       })
       .catch((err) => {
         addToast("Nao foi possivel salvar!", { appearance: "error" });
-      });      
+        console.log({
+          nome,
+          status,
+          tempoPrisao,
+          multa,
+          dataCriacao,
+          descricao,
+        });
+      });
   }
 
   return (
