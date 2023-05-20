@@ -1,15 +1,18 @@
-import 'styled-components';
+import 'styled-components'
 
-declare module "styled-components" {
+declare module 'styled-components' {
   export interface DefaultTheme {
-    title: string;
-
-    color: {
-      primary: string;
-      secundary: string;
-
-      backgound: string;
-      text: string;
+    colors: {
+      //default: Interpolation<ThemeProps<DefaultTheme>>
+      primary: string
+      secondary: string
+      primary: string
+      secondary: string
+      light: string
+      text: string
+      textDark: string
+      bgDefault: string
+      bgLight: string
     }
   }
 }
